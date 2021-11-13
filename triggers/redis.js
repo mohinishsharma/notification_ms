@@ -23,21 +23,16 @@ client.on('error', function (error) {
 })
 
 client.on('message', async function (channel, message) {
-  const data = JSON.parse(message);
-  const valid = isDataValid(data);
-  if (valid) {
-    try {
-      if (channel === 'urgent') {
-        const notification = await notificationModel.create(tranformToNotification(data));
-        dispatchNotifications({ [notification.provider]: notification });
-      } else if (channel == 'schedule') {
-        await notificationModel.create(tranformToNotification(data));
-      }
-    } catch (error) {
-      console.log("[REDIS] Failed to process notification : ", error);
+  try {
+    const data = JSON.parse(message);
+    if (channel === 'urgent') {
+      const notification = await notificationModel.create(tranformToNotification(data));
+      dispatchNotifications({ [notification.provider]: notification });
+    } else if (channel == 'schedule') {
+      await notificationModel.create(tranformToNotification(data));
     }
-  } else {
-    console.log('[REDIS] Invalid data provided : ', data);
+  } catch (error) {
+    console.log("[REDIS] Failed to process notification : ", error);
   }
 });
 
