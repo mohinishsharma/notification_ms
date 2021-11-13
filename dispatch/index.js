@@ -33,7 +33,12 @@ function dispatchNotifications(notifications) {
   missingDispatcher.length && console.log("[DISPATCHER] missing dispatcher for provider(s) \"" + missingDispatcher.join() + "\"");
   const providerName = Object.keys(notifications);
   providerName.length && console.log("[DISPATCHER] Dispatched for \"" + providerName.join() + "\"");
-  providerName.forEach(p => dispatchers[p]['dispatch'](notifications[p]));
+  providerName.forEach(p => {
+    const ret = dispatchers[p]['dispatch'](notifications[p]);
+    if (ret instanceof Promise && dispatchers[p]['afterDispatch']) {
+      ret.then(dispatchers[p]['afterDispatch']);
+    }
+  });
 }
 
 module.exports = dispatchNotifications;
