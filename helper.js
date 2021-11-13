@@ -15,8 +15,8 @@ const providers = config.get('providers');
 module.exports.isDataValid = function (data) {
   if (data && 'type' in data) {
     const providerModules = providers.reduce((a,p) => {
-      if (fs.existsSync('./providers/' + p + '.js')) {
-        const provider = require('./providers/' + p);
+      if (fs.existsSync(__dirname + '/providers/' + p + '.js')) {
+        const provider = require( __dirname + '/providers/' + p);
         a[p] = provider;
         return a;
       }
@@ -75,7 +75,7 @@ module.exports.segregateByProvider = function (settled) {
 module.exports.tranformToNotification = function (data) {
   const valid = module.exports.isDataValid(data);
   if (valid && valid.valid) {
-    // tranformation should be done here
+    return valid.provider && valid.provider.tranformToNotification ? valid.provider.tranformToNotification(data) : data;
   }
   throw Error('Failed to tranform given data to notification - ' + JSON.stringify(data));
 }
