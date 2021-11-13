@@ -10,8 +10,8 @@ const providers = config.get('providers');
 function dispatchNotifications(notifications) {
   const notificationProviders = Object.keys(notifications);
   const dispatchers = providers.reduce((a,p) => {
-    if (fs.existsSync('./' + p + '.dispatch.js')) {
-      const dispatchFile = require('./' + p + '.dispatch');
+    if (fs.existsSync( __dirname + '/' + p + '.dispatch.js')) {
+      const dispatchFile = require(__dirname + '/' + p + '.dispatch');
       if ('dispatch' in dispatchFile) a[p] = dispatchFile.dispatch;
     }
     return a;
