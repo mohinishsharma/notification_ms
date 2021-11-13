@@ -135,3 +135,14 @@ module.exports.isValidData = function (data) {
     const dataKeys = Object.keys(data);
     return shouldHave.reduce((a,c) => a && dataKeys.includes(c), true);
 }
+
+/**
+ * Tranform data to mongo compatible object  
+ * NOTE: This is not necessary but helps when there is custom processing involved in notification processing
+ * @param {any} data Notification data from other service
+ */
+module.exports.tranformToNotification = function (data) {
+    const notifData = { provider: data.type, email: data.email, subject: data.subject, body: data.body };
+    return notifData;
+}
+  
