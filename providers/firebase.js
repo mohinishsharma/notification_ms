@@ -8,5 +8,6 @@ module.exports.provider = {};
  */
 module.exports.isValidData = function (data) {
   const shouldHave = ['token', 'title' ,'message', 'c2a'];
-  return Object.keys(data).reduce((a,c) => a && shouldHave.includes(c), true);
+  const dataKeys = Object.keys(data);
+  return shouldHave.reduce((a,c) => a && dataKeys.includes(c), true);
 }

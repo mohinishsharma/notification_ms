@@ -121,7 +121,8 @@ module.exports.provider = new MessagingProvider(config.get('msg91Key'));
  */
 module.exports.isValidData = function (data) {
   const shouldHave = ['mobile', 'flow', 'vars'];
-  return Object.keys(data).reduce((a,c) => a && shouldHave.includes(c), true);
+  const dataKeys = Object.keys(data);
+  return shouldHave.reduce((a,c) => a && dataKeys.includes(c), true);
 }
 /**
  * Tranform data to mongo compatible object  

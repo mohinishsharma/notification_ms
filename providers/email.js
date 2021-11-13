@@ -132,5 +132,6 @@ module.exports.provider = new EmailProvider(config.get('mailgun.key'), config.ge
  */
 module.exports.isValidData = function (data) {
     const shouldHave = ['email', 'subject', 'body'];
-    return Object.keys(data).reduce((a,c) => a && shouldHave.includes(c), true);
+    const dataKeys = Object.keys(data);
+    return shouldHave.reduce((a,c) => a && dataKeys.includes(c), true);
 }
